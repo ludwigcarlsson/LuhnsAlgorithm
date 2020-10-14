@@ -8,23 +8,27 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter number: ");
         String input = sc.nextLine();
-        System.out.println("Checksum: " + (checkInput(input) ? "Valid" : "Invalid"));
-        System.out.println("Digits: "+input.length() + (input.length()==16 ? " (credit card)" : ""));
+        System.out.println("Checksum: " + checkInput(input));
+        System.out.println("Digits: "+input.length()+" "+checkCreditCard(input.length()));
     }
 
-    public static boolean checkInput(String input) {
+    public static String checkInput(String input) {
         if (input == null) {
-            return false;
+            return null;
         }
         char checkDigit = input.charAt(input.length() -1);
         System.out.println("Input: "+input.substring(0, input.length()-1) +" "+ checkDigit);
         System.out.println("Provided: "+checkDigit);
-        String digit = calCheckDigit(input.substring(0, input.length()-1));
+        String digit = calCheckDigit(input.substring(0, input.length()-1), checkDigit);
         System.out.println("Expected: "+digit.charAt(0)+"\n");
-        return checkDigit == digit.charAt(0);
+        return digit.substring(1);
     }
 
-    public static String calCheckDigit(String input) {
+    public static String checkCreditCard(int length) {
+        return (length==16 ? "(credit card)" : "");
+    }
+
+    public static String calCheckDigit(String input, char checkDigit) {
         if (input == null) {
             return null;
         }
@@ -47,10 +51,13 @@ public class Main {
         for (int j = 0; j < digits.length; j++) {
             sum += digits[j];
         }
+        String luhn = checkLuhn(sum+Character.getNumericValue(checkDigit));
         sum=sum*9;
         digit = sum + "";
 
-        return digit.substring(digit.length()-1);
-
+        return digit.substring(digit.length()-1) + luhn;
+    }
+    public static String checkLuhn(int sum) {
+        return (sum%10 == 0) ? "Valid": "Invalid";
     }
 }
