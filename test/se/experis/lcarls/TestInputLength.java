@@ -7,7 +7,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class TestInputLength {
 
     @Test
-    void checkCreditCard() {
-        assertEquals("(credit card)", "");
+    void checkIfCreditCard() {
+        assertEquals("(credit card)", Main.checkCreditCard(16));
+    }
+
+    @Test
+    void checkIfNotCreditCard() {
+        assertEquals("", Main.checkCreditCard(10));
     }
 }
