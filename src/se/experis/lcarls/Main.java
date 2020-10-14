@@ -25,11 +25,11 @@ public class Main {
     }
 
     public static String checkCreditCard(int length) {
-        return (length==16 ? "(credit card)" : "");
+        return (length==16 ? "(credit card)" : ""); // checks if input is equal to 16 digits or not
     }
 
     public static String calCheckDigit(String input, char checkDigit) {
-        if (input == null) {
+        if (input == null) { // returns early if input somehow is empty
             return null;
         }
 
@@ -39,32 +39,36 @@ public class Main {
 
         String luhn = checkLuhn(sum+Character.getNumericValue(checkDigit));
         sum=sum*9;
-        digit = sum + "";
+        digit = sum + ""; // creates a string from the sum given
 
-        return digit.substring(digit.length()-1) + luhn;
+        return digit.substring(digit.length()-1) + luhn; // returns the last digit from the sum and the string value of the luhn-check
     }
 
     public static int calculateDigits(String input) {
-        int[] digits = new int[input.length()];
-
-        for (int i = 0; i < input.length(); i++) {
-            digits[i] = Character.getNumericValue(input.charAt(i));
+        if (input == null) { // returns early if input somehow is empty
+            return 0;
         }
 
-        for (int i = digits.length-1; i >= 0; i -= 2) {
+        int[] digits = new int[input.length()]; // Creates an array with the length of the amount of characters in passed argument "input"
+
+        for (int i = 0; i < input.length(); i++) {
+            digits[i] = Character.getNumericValue(input.charAt(i)); // Adds the numeric value of each character in input into the array
+        }
+
+        for (int i = digits.length-1; i >= 0; i -= 2) { // Multiplies the value by 2, starting from the back and decrementing by 2
             digits[i] += digits[i];
-            if (digits[i] >= 10) {
+            if (digits[i] >= 10) { // if the value times two equals more 10, subtract 9 from the value
                 digits[i] = digits[i] - 9;
             }
         }
         int sum = 0;
-        for (int j = 0; j < digits.length; j++) {
+        for (int j = 0; j < digits.length; j++) { // for each digit, add to sum
             sum += digits[j];
         }
         return sum;
     }
 
     public static String checkLuhn(int sum) {
-        return (sum%10 == 0) ? "Valid": "Invalid";
+        return (sum%10 == 0) ? "Valid": "Invalid"; // if the sum modulus 10 equals a rest of anything else than 0, return invalid, else return valid
     }
 }
